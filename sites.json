@@ -1,0 +1,225 @@
+{
+    "urls": [
+        "abcnews.com.co",
+        "cognitive-improvmentnews.com/t3/",
+        "infowars.com",
+        "www.naturalnews.com/index.html",
+        "prntly.com",
+        "libertywritersnews.com",
+        "www.huffingtonpost.com",
+        "www.yahoo.com/news/?ref=gs",
+        "news.google.com",
+        "www.cnn.com",
+        "www.nytimes.com",
+        "www.foxnews.com",
+        "www.nbcnews.com"
+    ],
+	"abcnews.com.co": {
+		"url": "abcnews.com.co",
+		"mtext": "FIND",
+		"otext": "FIND",
+		"whois": {
+			"email": "netskrillsupport@gmail.com",
+			"address": [
+				"402 North 10th Street",
+				"Phoenix",
+				"85006",
+				"United States"
+			],
+			"phone": "+48.07750365"
+		},
+		"type": "Fake"
+	},
+	"cognitive-improvmentnews.com/t3/": {
+		"url": "cognitive-improvmentnews.com/t3/",
+		"mtext": "FIND",
+		"otext": "FIND",
+		"whois": {
+			"email": "cognitive-improvmentnews.com@domainsbyproxy.com",
+			"address": [
+				"14455 N. Hayden Road",
+				"Scottsdale",
+				"85260",
+				"United States"
+			],
+			"phone": "+1.4806242599"
+		},
+		"type": "Fake"
+	},
+	"infowars.com": {
+		"url": "infowars.com",
+		"mtext": "FIND",
+		"otext": "FIND",
+		"whois": {
+			"email": "ishare_domains-brandnames@infowars.com",
+			"address": [
+				"PO Box 19549",
+				"Austin",
+				"78760",
+				"United States"
+			],
+			"phone": "+1.5124394400"
+		},
+		"type": "Fake"
+	},
+	"www.naturalnews.com/index.html": {
+		"url": "www.naturalnews.com/index.html",
+		"mtext": "FIND",
+		"otext": "FIND",
+		"whois": {
+			"email": "naturalnews.com@domainsbyproxy.com",
+			"address": [
+				"14455 N. Hayden Road",
+				"Scottsdale",
+				"85260",
+				"United States"
+			],
+			"phone": "+1.4806242599"
+		},
+		"type": "Fake"
+	},
+	"prntly.com": {
+		"url": "prntly.com",
+		"mtext": "FIND",
+		"otext": "FIND",
+		"whois": {
+			"email": "contact@privacyprotect.org",
+			"address": [
+				"C/O ID#10760, PO Box 16 Note",
+				"Nobby Beach",
+				"QLD 4218",
+				"Australia"
+			],
+			"phone": "_45.36946676"
+		},
+		"type": "Fake"
+	},
+	"libertywritersnews.com": {
+		"url": "libertywritersnews.com",
+		"mtext": "FIND",
+		"otext": "FIND",
+		"whois": {
+			"email": "sqgwtqvvtc@whoisprivacyprotect.com",
+			"address": [
+				"PO Box 639",
+				"Kirkland",
+				"98083",
+				"United States"
+			],
+			"phone": "+1.4259740657"
+		},
+		"type": "Fake"
+	},
+	"www.yahoo.com/news/?ref=gs": {
+		"url": "www.yahoo.com/news/?ref=gs",
+		"mtext": "FIND",
+		"otext": "FIND",
+		"whois": {
+			"email": "domainadmin@yahoo-inc.com",
+			"address": [
+				"701 First Avenue",
+				"Sunnyvale",
+				"94089",
+				"United States"
+			],
+			"phone": "+1.4083493300"
+		},
+		"type": "Real"
+	},
+	"news.google.com": {
+		"url": "news.google.com",
+		"mtext": "FIND",
+		"otext": "FIND",
+		"whois": {
+			"email": "dns-admin@google.com",
+			"address": [
+				"1600 Amphitheatre Parkway",
+				"Mountain View",
+				"94043",
+				"United States"
+			],
+			"phone": "+1.6502530000"
+		},
+		"type": "Real"
+	},
+	"www.huffingtonpost.com": {
+		"url": "www.huffingtonpost.com",
+		"mtext": "FIND",
+		"otext": "FIND",
+		"whois": {
+			"email": "domain-adm@corp.aol.com",
+			"address": [
+				"560 Broadway, 405",
+				"New York",
+				"10012",
+				"United States"
+			],
+			"phone": "+1.7032654670"
+		},
+		"type": "Real"
+	},
+	"www.cnn.com": {
+		"url": "www.cnn.com",
+		"mtext": "FIND",
+		"otext": "FIND",
+		"whois": {
+			"email": "tmgroup@turner.com",
+			"address": [
+				"One CNN Center",
+				"Atlanta",
+				"30303",
+				"United States"
+			],
+			"phone": "+1.40482750000"
+		},
+		"type": "Real"
+	},
+	"www.nytimes.com": {
+		"url": "www.nytimes.com",
+		"mtext": "FIND",
+		"otext": "FIND",
+		"whois": {
+			"email": "hostmaster@nytimes.com",
+			"address": [
+				"620 8th Avenue",
+				"New York",
+				"10018",
+				"United States"
+			],
+			"phone": "+1.2125561234"
+		},
+		"type": "Real"
+	},
+	"www.foxnews.com": {
+		"url": "www.foxnews.com",
+		"mtext": "FIND",
+		"otext": "FIND",
+		"whois": {
+			"email": "wmf@fox.com",
+			"address": [
+				"10201 W. Pico Boulevard",
+				"Los Angeles",
+				"90213",
+				"United States"
+			],
+			"phone": "+1.31036910000"
+		},
+		"type": "Real"
+	},
+	"www.nbcnews.com": {
+		"url": "www.nbcnews.com",
+		"mtext": "FIND",
+		"otext": "FIND",
+		"whois": {
+			"email": "domain.admin@nbcuni.com",
+			"address": [
+				"904 Sylvan Avenue",
+				"Englewood Cliffs",
+				"07632",
+				"United States"
+			],
+			"phone": "+1.81877710000"
+		},
+		"type": "Real"
+	}
+}

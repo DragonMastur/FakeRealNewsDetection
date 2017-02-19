@@ -41,7 +41,7 @@ class SEML:
         console.log("DONE!")
 
     def monkey_learn(self, text):
-        mlurl = "http://api.monkeylearn.com/v2/extractors/ex_RK5ApHnN/extract/"
+        mlurl = "https://api.monkeylearn.com/v2/extractors/ex_RK5ApHnN/extract/"
         DATA = {"text_list": text}
         HEADERS = {"Authorization": self.api_key, "Content-Type": "application/json"}
         res = requests.post(mlurl, data=json.dumps(DATA), headers=HEADERS)
@@ -148,24 +148,28 @@ class SEML:
             json.dump(output, f_out)
         console.log("DONE!")
 
-    def get_prob(self, filename, outname):
-        console.log("Getting file contents...")
-        with open(filename, 'r') as f_in:
-            f_cont = json.load(f_in)
+    def get_prob(self, filename, outname, infile=None):
         types = []
         docs = []
-        for type in docs:
-            types.append(type)
-            for doc in docs[type]:
-                doc["type"] = type
-                doc.append(post)
-        console.log("DONE! Calculating words...")
         probs = {}
         words = {}
         totals = {}
-        for type in types:
-            words[type] = {};
-            totals[type] = 0;
+        if infile != None:
+            with open(infile, 'r') as f_in:
+                words = json.load(f_in)
+        else:
+            for type in types:
+                words[type] = {};
+                totals[type] = 0;
+        console.log("Getting file contents...")
+        with open(filename, 'r') as f_in:
+            f_cont = json.load(f_in)
+        for type in f_cont:
+            types.append(type)
+            for doc in f_cont[type]:
+                doc["type"] = type
+                docs.append(doc)
+        console.log("DONE! Calculating words...")
         console.log("DONE! Calculating probiblities...")
         for doc in docs:
             type = doc["type"];
@@ -216,7 +220,11 @@ def main():
         if len(sys.argv) < 4:
             print(help_msg)
             quit(0)
-        seml_inst.get_prob(sys.argv[2], sys.argv[3])
+        try:
+            sa = sys.argv[4]
+        except:
+            sa = None
+        seml_inst.get_prob(sys.argv[2], sys.argv[3], sa)
     endtime = datetime.datetime.now()
     totaltime = (endtime-starttime).total_seconds()
     console.log("Took {seconds} seconds to run.".format(seconds=totaltime))

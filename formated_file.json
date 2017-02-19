@@ -1,42 +1,74 @@
 {
     "Fake-headers": [
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
+        },
+        {
+            "texts": []
         }
     ],
     "Fake-paragraphs": [
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
+        },
+        {
+            "texts": [
+                "News - ABC News"
+            ]
         }
     ],
     "Fake-whois": [
@@ -69,52 +101,85 @@
             "texts": [
                 "sqgwtqvvtc@whoisprivacyprotect.com PO Box 639 Kirkland 98083 United States +1.4259740657"
             ]
+        },
+        {
+            "texts": [
+                "FIND FIND FIND FIND FIND FIND"
+            ]
         }
     ],
     "Real-headers": [
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         }
     ],
     "Real-paragraphs": [
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         },
         {
-            "texts": "FIND"
+            "texts": [
+                "FIND"
+            ]
         }
     ],
     "Real-whois": [

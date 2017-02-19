@@ -1,7 +1,10 @@
+import copy
+import datetime
 import json
+import PiConsole
 import requests
 import sys
-import PiConsole
+import string
 
 help_msg = """
 Usage: python seml_logic.py [type] [*args]
@@ -117,7 +120,78 @@ class SEML:
         with open("sites.json", 'w') as f_out:
             json.dump(f_cont, f_out)
 
+    def format_file(self, filename):
+        console.log("Getting file contents...")
+        with open(filename, 'r') as f_in:
+            f_cont = json.load(f_in)
+        console.log("DONE! Formatting file...")
+        output = {
+            "Fake-headers": [],
+            "Fake-paragraphs": [],
+            "Fake-whois": [],
+            "Real-headers": [],
+            "Real-paragraphs": [],
+            "Real-whois": []
+        }
+        for url in f_cont["urls"]:
+            url = f_cont[url]
+            output[url['type']+'-headers'].append({"texts": url["mtext"]})
+            output[url['type']+'-paragraphs'].append({"texts": url["otext"]})
+            whois_text = []
+            whois_text.append(url["whois"]["email"])
+            whois_text.append(' '.join(url["whois"]["address"]))
+            whois_text.append(url["whois"]["phone"])
+            whois_text = ' '.join(whois_text)
+            output[url['type']+'-whois'].append({"texts": [whois_text]})
+        console.log("DONE! Writing data to file 'formated_file.json'...")
+        with open("formated_file.json", 'w') as f_out:
+            json.dump(output, f_out)
+        console.log("DONE!")
+
+    def get_prob(self, filename, outname):
+        console.log("Getting file contents...")
+        with open(filename, 'r') as f_in:
+            f_cont = json.load(f_in)
+        types = []
+        docs = []
+        for type in docs:
+            types.append(type)
+            for doc in docs[type]:
+                doc["type"] = type
+                doc.append(post)
+        console.log("DONE! Calculating words...")
+        probs = {}
+        words = {}
+        totals = {}
+        for type in types:
+            words[type] = {};
+            totals[type] = 0;
+        console.log("DONE! Calculating probiblities...")
+        for doc in docs:
+            type = doc["type"];
+            for text in doc["texts"]:
+                for word in text.split():
+                    if word.startswith('http://'):
+                        continue
+                    word = ''.join(ch for ch in word.lower() if ch not in set(string.punctuation));
+                    if word in words[type]:
+                        words[type][word] += 1;
+                    else:
+                        words[type][word] = 1;
+                    totals[type] += 1;
+        console.log("DONE! Saving data to files '{fname}0.json' and '{fname}1.json'...".format(fname=outname))
+        words2 = copy.deepcopy(words)
+        for type in words2:
+            for word in words2[type]:
+                words2[type][word] = words[type][word] / float(totals[type])
+        with open(outname+"0.json",'w') as f_out:
+            json.dump(words, f_out)
+        with open(outname+"1.json",'w') as f_out:
+            json.dump(words2, f_out)
+        console.log("DONE!")
+
 def main():
+    starttime = datetime.datetime.now()
     seml_inst = SEML()
     if len(sys.argv) < 2:
         print(help_msg)
@@ -138,6 +212,14 @@ def main():
             print(help_msg)
             quit(0)
         seml_inst.format_file(sys.argv[2])
+    if stype.lower() == "prob":
+        if len(sys.argv) < 4:
+            print(help_msg)
+            quit(0)
+        seml_inst.get_prob(sys.argv[2], sys.argv[3])
+    endtime = datetime.datetime.now()
+    totaltime = (endtime-starttime).total_seconds()
+    console.log("Took {seconds} seconds to run.".format(seconds=totaltime))
 
 if __name__ == "__main__":
     main()

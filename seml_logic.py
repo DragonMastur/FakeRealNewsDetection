@@ -158,9 +158,7 @@ class SEML:
             with open(infile, 'r') as f_in:
                 words = json.load(f_in)
         else:
-            for type in types:
-                words[type] = {};
-                totals[type] = 0;
+            pass
         console.log("Getting file contents...")
         with open(filename, 'r') as f_in:
             f_cont = json.load(f_in)
@@ -170,6 +168,9 @@ class SEML:
                 doc["type"] = type
                 docs.append(doc)
         console.log("DONE! Calculating words...")
+        for type in types:
+            words[type] = {};
+            totals[type] = 0;
         console.log("DONE! Calculating probiblities...")
         for doc in docs:
             type = doc["type"];

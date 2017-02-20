@@ -157,8 +157,9 @@ class SEML:
         if infile != None:
             with open(infile, 'r') as f_in:
                 words = json.load(f_in)
-        else:
-            pass
+            for type in words["Types"]:
+                totals[type] = words["Types"][type]
+            words.pop("Types")
         console.log("Getting file contents...")
         with open(filename, 'r') as f_in:
             f_cont = json.load(f_in)
@@ -168,9 +169,10 @@ class SEML:
                 doc["type"] = type
                 docs.append(doc)
         console.log("DONE! Calculating words...")
-        for type in types:
-            words[type] = {};
-            totals[type] = 0;
+        if infile == None:
+            for type in types:
+                words[type] = {};
+                totals[type] = 0;
         console.log("DONE! Calculating probiblities...")
         for doc in docs:
             type = doc["type"];
@@ -189,6 +191,9 @@ class SEML:
         for type in words2:
             for word in words2[type]:
                 words2[type][word] = words[type][word] / float(totals[type])
+        words["Types"] = {}
+        for type in types:
+            words["Types"][type] = totals[type]
         with open(outname+"0.json",'w') as f_out:
             json.dump(words, f_out)
         with open(outname+"1.json",'w') as f_out:

@@ -1,0 +1,41 @@
+{
+    "manifest_version": 2,
+    "name": "Fake-Real News Detector Using ML",
+    "short_name": "Fake News Detector",
+    "description": "A fake news detector using machine learning.",
+    "author": "Preston Hager",
+    "version": "0.0.1",
+    "icons": {
+        "16": "icon16.png",
+        "32": "icon32.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "http://*/*", "https://*/*"
+            ],
+            "js": ["jquery-3.1.1.min.js", "content.js"]
+        }
+    ],
+    "background": {
+        "scripts": ["jquery-3.1.1.min.js", "background.js"]
+    },
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup.html"
+    },
+    "incognito": "spanning",
+    "offline_enabled": true,
+    "permissions": [
+        "activeTab",
+        "background",
+        "contentSettings",
+        "idle",
+        "storage",
+        "tabs",
+        "tabCapture"
+    ],
+    "update_url": "http://piist300.pythonanywhere.com/seml/update"
+}

@@ -1,0 +1,16 @@
+{
+    "abcnews.com.co": "Fake",
+    "cognitive-improvmentnews.com/t3/": "Fake",
+    "infowars.com": "Fake",
+    "www.naturalnews.com/index.html": "Fake",
+    "prntly.com": "Fake",
+    "libertywritersnews.com": "Fake",
+    "www.yahoo.com/news/?ref=gs": "Real",
+    "news.google.com": "Real",
+    "www.huffingtonpost.com": "Real",
+    "www.cnn.com": "Real",
+    "www.nytimes.com": "Real",
+    "www.foxnews.com": "Real",
+    "www.nbcnews.com": "Real",
+    "http://abcnews.com.co/": "Fake"
+}

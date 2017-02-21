@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Fake-Real News Detector Using ML",
     "short_name": "Fake News Detector",
-    "description": "A fake news detector using machine learning.",
+    "description": "A fake news detector using machine learning. By: Preston Hager",
     "author": "Preston Hager",
     "version": "0.0.1",
     "icons": {

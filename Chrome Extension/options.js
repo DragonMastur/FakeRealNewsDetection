@@ -33,6 +33,7 @@ function load_options(ct) {
         new_elm_text.append(document.createTextNode(sites[s].url));
         sites_list.append(new_elm);
         sites_list.append(new_elm_text);
+        sites_list.append(document.createElement("br"));
         $("#site-"+s).change(function() {
             sites[this.id.split('-')[1]].checked = this.checked;
         });

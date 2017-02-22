@@ -1,6 +1,3 @@
-//var firstHref = $("a[href^='http']").eq(0).attr("href");
-chrome.tabs.query({'active': true}, function(tabs) {
-    var firstHref = tabs[0].url;
+chrome.runtime.sendMessage({"command": "get-url-current"}, function(response) {
+    console.log("This page's URL is: " + response.result);
 });
-
-console.log(firstHref);

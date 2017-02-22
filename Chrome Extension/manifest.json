@@ -39,7 +39,7 @@
     ],
     "options_ui": {
         "page": "options.html",
-        "chrome_style": true
+        "chrome_style": false
     },
     "update_url": "http://piist300.pythonanywhere.com/seml/update"
 }

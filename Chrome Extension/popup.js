@@ -7,7 +7,6 @@ function get_toggle_type() {
         save_toggle_type();
     }
 }
-
 function save_toggle_type() {
     localStorage["seml_toggle_type"] = toggle_type;
 }

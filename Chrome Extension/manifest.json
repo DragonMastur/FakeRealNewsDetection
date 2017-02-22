@@ -37,5 +37,9 @@
         "tabs",
         "tabCapture"
     ],
+    "options_ui": {
+        "page": "options.html",
+        "chrome_style": true
+    },
     "update_url": "http://piist300.pythonanywhere.com/seml/update"
 }

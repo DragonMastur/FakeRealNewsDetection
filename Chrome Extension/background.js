@@ -13,4 +13,19 @@ chrome.runtime.onMessage.addListener(
                 sendResponse({"result": data});
             });
         }
+        if (request.command == "get-storage") {
+            console.log("Trying to get data with key '" + request.key + "'");
+            try {
+                sendResponse({"result": chrome.storage.sync.get(request.key)});
+            } catch (err) {
+                console.log("Failed to get data. "+err);
+                sendResponse({"result": undefined, "error": err});
+            }
+        }
+        if (request.command == "set-storage") {
+            chrome.storage.sync.set(request.data, function() {
+                console.log("Saved data: " + request.data);
+                sendResponse("Saved!");
+            })
+        }
 });

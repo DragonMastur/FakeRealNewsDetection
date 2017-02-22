@@ -1,3 +1,7 @@
 chrome.runtime.sendMessage({"command": "send-url"}, function(response) {
     console.log("This page contains " + response.result);
 });
+
+chrome.runtime.sendMessage({"command": "get-storage", "key": "seml_sites"}, function(response) {
+    console.log(response);
+});

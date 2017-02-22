@@ -3,15 +3,17 @@ var sites_list = $("#sites-list-ul");
 var sites_inputs;
 
 function get_sites() {
-    try {
-        sites = JSON.parse(localStorage["seml_sites"]);
-    } catch(err) {
-        sites = {};
+    chrome.runtime.sendMessage({"command": "get-storage", "key": "seml_sites"}, function(response) {
+        console.log(response);
+        sites = JSON.parse(response.result);
+    });
+    if (sites == undefined) {
+        sites = {"0":{"url": "http:/null.com/none", "checked": true, "type": "Fake"}};
         save_sites();
     }
 }
 function save_sites() {
-    localStorage["seml_sites"] = JSON.stringify(sites);
+    chrome.runtime.sendMessage({"command": "set-storage", "data": JSON.stringify(sites)});
 }
 
 function load_options(ct) {

@@ -1,3 +1,3 @@
-chrome.runtime.sendMessage({"command": "get-url-current"}, function(response) {
-    console.log("This page's URL is: " + response.result);
+chrome.runtime.sendMessage({"command": "send-url"}, function(response) {
+    console.log("This page contains " + response.result);
 });

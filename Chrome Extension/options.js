@@ -3,7 +3,7 @@ var sites_list = $("#sites-list-ul");
 var sites_inputs;
 
 function get_sites() {
-    chrome.runtime.sendMessage({"command": "get-storage", "key": "seml_sites"}, function(response) {
+    chrome.runtime.sendMessage({"name": "options.js", "command": "get-storage", "key": "seml_sites"}, function(response) {
         console.log(response);
         sites = JSON.parse(response.result);
     });
@@ -12,8 +12,11 @@ function get_sites() {
         save_sites();
     }
 }
+
 function save_sites() {
-    chrome.runtime.sendMessage({"command": "set-storage", "data": JSON.stringify(sites)});
+    chrome.runtime.sendMessage({"name": "options.js", "command": "set-storage", "data": JSON.stringify(sites)}, function(response) {
+        console.log(response);
+    });
 }
 
 function load_options(ct) {

@@ -142,6 +142,7 @@ class SEML:
             json.dump(f_cont, f_out)
         return f_cont # return the file content for the calculation function.
 
+"""
     def format_file(self, filename):
         '''
         Format a file for process of the 'prob' function.
@@ -224,6 +225,7 @@ class SEML:
         with open(outname+"1.json",'w') as f_out:
             json.dump(words2, f_out)
         console.log("DONE!")
+"""
 
     def calculate(self, api_key, url, filename, file2):
         with open(file2, 'r') as f_in:

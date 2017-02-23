@@ -137,12 +137,15 @@ class SEML:
                 },
                 "type": news_type # and set the news type. usually FIND, unless training data.
             }
-            f_cont["urls"].append(data["url"])
-        with open("sites.json", 'w') as f_out:
+            f_cont["urls"].append(data["url"]) # append the data to the file contents.
+        with open("sites.json", 'w') as f_out: # and finally save the file.
             json.dump(f_cont, f_out)
-        return f_cont
+        return f_cont # return the file content for the calculation function.
 
     def format_file(self, filename):
+        '''
+        Format a file for process of the 'prob' function.
+        '''
         console.log("Getting file contents...")
         with open(filename, 'r') as f_in:
             f_cont = json.load(f_in)

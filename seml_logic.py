@@ -24,38 +24,49 @@ Args:
 ** optional argument.
 """
 
+# console for logging based on a name.
 console = PiConsole.PiConsole("SEML Logic")
 
 class SEML:
     def __init__(self):
         self.api_key = "None"
+
     def change_api_key(self, api_key):
         self.api_key = "Token " + api_key
 
     def get_page(self, url, news_type="FIND"):
+        '''
+        Getting a page from an actual URL. This saves as a file called 'sites.json'. Format is supposed to be "human readable"...
+        '''
         console.log("Trying to gather page {url}...".format(url=url))
-        res = [str(self.send_request(url))]
+        res = [str(self.send_request(url))] # response of the page content.
         console.log("DONE! Accessing Monkey Learn API...")
-        response = self.monkey_learn(res)
+        response = self.monkey_learn(res) # accessing the Monkey Learn API to find words.
         console.log("DONE! Saving data do file...")
-        norm = self.normalize_words([response])
+        norm = self.normalize_words([response]) # save the data to a file with a "human-readable" format.
         s = self.save({"url": url, "headers": norm["headers"], "paragraphs": norm["paragraphs"]}, news_type)
         console.log("DONE!")
-        return s
+        return s # this is used for the calculations function, so the program can get the data from Monkey Learn.
 
     def monkey_learn(self, text):
-        mlurl = "https://api.monkeylearn.com/v2/extractors/ex_RK5ApHnN/extract/"
-        DATA = {"text_list": text}
-        HEADERS = {"Authorization": self.api_key, "Content-Type": "application/json"}
-        res = requests.post(mlurl, data=json.dumps(DATA), headers=HEADERS)
+        '''
+        Access the Monkey Learn API. Argument 'text' should be an HTML content.
+        '''
+        mlurl = "https://api.monkeylearn.com/v2/extractors/ex_RK5ApHnN/extract/" # the Monkey Learn API URL.
+        DATA = {"text_list": text} # data to send to Monkey Learn API.
+        HEADERS = {"Authorization": self.api_key, "Content-Type": "application/json"} # headers for authorization.
+        res = requests.post(mlurl, data=json.dumps(DATA), headers=HEADERS) # send the actual request.
         try:
-            return json.loads(res.text)["result"][0]
+            return json.loads(res.text)["result"][0] # try to load the data and return it, otherwise...
         except:
-            console.logerror("Error in Monkey Learn API access.")
-            console.log("Request got: {res}".format(res=res.text))
-            return False
+            console.logerror("Error in Monkey Learn API access.") # log the error.
+            console.log("Request got: {res}".format(res=res.text)) # tell what the request got/returned.
+            return False # return the function with a "False".
 
     def send_request(self, url):
+        '''
+        Send a request for a page URL, this is used to get a pages actual HTML content.
+        '''
         try:
             response = requests.get(url=url, headers={})
             console.log('Response HTTP Status Code: {status_code}'.format(
@@ -66,48 +77,55 @@ class SEML:
             return False
 
     def normalize_words(self, array):
-        headers = []
-        paragraphs = []
-        for doc in array:
-            for par in doc:
+        '''
+        Normalize the values returned by the Monkey Learn API to a "human readable" json format.
+        '''
+        headers = [] # the headers list, used for 'mtext'
+        paragraphs = [] # the paragraphs list, used for 'otext'
+        for doc in array: # for each document in monkey learn return list.
+            for par in doc: # for each paragraph/header in the document.
                 par["paragraph_text_new"] = ""
                 skip_next = 0
-                for c in range(len(par["paragraph_text"])):
-                    if skip_next != 0:
+                for c in range(len(par["paragraph_text"])): # for each character in the paragraph/header.
+                    if skip_next != 0: # skiping over characters already recorded.
                         skip_next -= 1
                         continue
+                    # this next part is for \xXX escape codes.
                     if par["paragraph_text"][c] == "\\" and par["paragraph_text"][c+1] == "x":
                         pp = par["paragraph_text"][c+2:c+4]
                         par["paragraph_text_new"] += chr(int(pp, 16))
                         skip_next = 6
-                    elif par["paragraph_text"][c] == "\\":
+                    elif par["paragraph_text"][c] == "\\": # for back slashes.
                         skip_next = 1
-                    else:
+                    else: # any other character.
                         par["paragraph_text_new"] += par["paragraph_text"][c]
-                if par["paragraph_text_new"] == "":
+                if par["paragraph_text_new"] == "": # after normalizing the paragraph, check to see if it's empty.
                     continue
-                if par["is_header"]:
+                if par["is_header"]: # if the paragraph is a "header" then add it to 'mtext'.
                     headers.append(par["paragraph_text_new"].strip())
-                else:
+                else: # otherwise the paragraph is "paragraph" and add it to 'otext'.
                     paragraphs.append(par["paragraph_text_new"].strip())
-        return {"headers": headers, "paragraphs": paragraphs}
+        return {"headers": headers, "paragraphs": paragraphs} # return the normalized paragraphs.
 
     def save(self, data, news_type):
-        try:
+        '''
+        Save the found data to a "human readable" json file.
+        '''
+        try: # try to open an already made 'sites.json' file, otherwise...
             with open("sites.json", 'r') as f_in:
                 f_cont = json.load(f_in)
-        except:
+        except: # create a new 'sites.json' file.
             with open("sites.json", 'w') as f_in:
-                f_cont = {"urls": []}
-        if data["url"] in f_cont["urls"]:
+                f_cont = {"urls": []} # default data of a single key.
+        if data["url"] in f_cont["urls"]: # if the URL of found data is already in the json file, we modify only the header and paragraph.
             f_cont[data["url"]]["mtext"] = data["headers"]
             f_cont[data["url"]]["otext"] = data["paragraphs"]
-        else:
+        else: # otherwise, create a new dictionary of the data.
             f_cont[data["url"]] = {
-                "url": data["url"],
-                "mtext": data["headers"],
-                "otext": data["paragraphs"],
-                "whois": {
+                "url": data["url"], # set URL.
+                "mtext": data["headers"], # set headers.
+                "otext": data["paragraphs"], # set paragraphs.
+                "whois": { # set default WHOIS. this will be changed later after automatic whois is implemented.
                     "email": "FIND",
                     "address": [
                         "FIND",
@@ -117,7 +135,7 @@ class SEML:
                     ],
                     "phone": "FIND"
                 },
-                "type": news_type
+                "type": news_type # and set the news type. usually FIND, unless training data.
             }
             f_cont["urls"].append(data["url"])
         with open("sites.json", 'w') as f_out:

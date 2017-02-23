@@ -1,3 +1,5 @@
+var storage_get;
+
 console.log("Started 'Fake News Detector'");
 
 chrome.runtime.onMessage.addListener(
@@ -16,16 +18,24 @@ chrome.runtime.onMessage.addListener(
         if (request.command == "get-storage") {
             console.log("Trying to get data with key '" + request.key + "'");
             try {
-                sendResponse({"result": chrome.storage.sync.get(request.key)});
+                chrome.storage.sync.get(request.key, function(data) {
+                    storage_get = data;
+                    sendResponse({"result": storage_get});
+                });
             } catch (err) {
                 console.log("Failed to get data. "+err);
                 sendResponse({"result": undefined, "error": err});
             }
         }
         if (request.command == "set-storage") {
-            chrome.storage.sync.set(request.data, function() {
+            chrome.storage.sync.set(JSON.parse(request.data), function() {
                 console.log("Saved data: " + request.data);
                 sendResponse("Saved!");
             })
         }
+        if (request.command == "log") {
+            console.log(request.log);
+            sendResponse("Logged.");
+        }
+        return true;
 });

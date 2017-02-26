@@ -198,28 +198,39 @@ class SEML:
 
     def get_prob(self, filename, outfile, infile=None):
         if infile != None:
+            console.log("Opening previous output...")
             with open(infile, 'r') as f_in:
                 words = json.load(f_in)
+            console.log("DONE!")
         else:
             words = {"mtext": {}, "otext": {}, "whois": {}}
+            console.log("Set defaults.")
+        console.log("Reading file of sites...")
         with open(filename, 'r') as f_in:
             f_cont = json.load(f_in)
+        console.log("DONE! Going through URLS...")
         for url in f_cont["urls"]:
             for t in ["mtext", "otext"]:
-                for word in f_cont[url][t].split():
+                console.log("Reading '{type}' text and logging...")
+                for word in ' '.join(f_cont[url][t]).split():
                     if word not in words[t]:
                         words[t][word] = 1
                     else:
                         words[t][word] += 1
+            console.log("Reading whois text and logging...")
             whois_text = ""
             whois_text += f_cont[url]["whois"]["email"] + " "
             whois_text += ' '.join(f_cont[url]["whois"]["address"]) + " "
             whois_text += f_cont[url]["whois"]["phone"]
             for word in whois_text.split():
-                if word not in words[t]:
-                    words[t][word] = 1
+                if word not in words["whois"]:
+                    words["whois"][word] = 1
                 else:
-                    words[t][word] += 1
+                    words["whois"][word] += 1
+        console.log("Finished with URLS. Dumping output...")
+        with open(outfile, 'w') as f_out:
+            json.dump(words, f_out)
+        console.log("DONE!")
 
     def calculate(self, api_key, url, filename, file2):
         with open(file2, 'r') as f_in:

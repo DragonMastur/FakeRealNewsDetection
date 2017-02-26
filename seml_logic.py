@@ -143,37 +143,6 @@ class SEML:
         return f_cont # return the file content for the calculation function.
 
     """
-    def format_file(self, filename):
-        '''
-        Format a file for process of the 'prob' function.
-        '''
-        console.log("Getting file contents...")
-        with open(filename, 'r') as f_in:
-            f_cont = json.load(f_in)
-        console.log("DONE! Formatting file...")
-        output = {
-            "Fake-headers": [],
-            "Fake-paragraphs": [],
-            "Fake-whois": [],
-            "Real-headers": [],
-            "Real-paragraphs": [],
-            "Real-whois": []
-        }
-        for url in f_cont["urls"]:
-            url = f_cont[url]
-            output[url['type']+'-headers'].append({"texts": url["mtext"]})
-            output[url['type']+'-paragraphs'].append({"texts": url["otext"]})
-            whois_text = []
-            whois_text.append(url["whois"]["email"])
-            whois_text.append(' '.join(url["whois"]["address"]))
-            whois_text.append(url["whois"]["phone"])
-            whois_text = ' '.join(whois_text)
-            output[url['type']+'-whois'].append({"texts": [whois_text]})
-        console.log("DONE! Writing data to file 'formated_file.json'...")
-        with open("formated_file.json", 'w') as f_out:
-            json.dump(output, f_out)
-        console.log("DONE!")
-
     def get_prob(self, filename, outname, infile=None):
         types = []
         docs = []

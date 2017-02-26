@@ -142,7 +142,7 @@ class SEML:
             json.dump(f_cont, f_out)
         return f_cont # return the file content for the calculation function.
 
-"""
+    """
     def format_file(self, filename):
         '''
         Format a file for process of the 'prob' function.
@@ -225,7 +225,32 @@ class SEML:
         with open(outname+"1.json",'w') as f_out:
             json.dump(words2, f_out)
         console.log("DONE!")
-"""
+    """
+
+    def get_prob(self, filename, outfile, infile=None):
+        if infile != None:
+            with open(infile, 'r') as f_in:
+                words = json.load(f_in)
+        else:
+            words = {"mtext": {}, "otext": {}, "whois": {}}
+        with open(filename, 'r') as f_in:
+            f_cont = json.load(f_in)
+        for url in f_cont["urls"]:
+            for t in ["mtext", "otext"]:
+                for word in f_cont[url][t].split():
+                    if word not in words[t]:
+                        words[t][word] = 1
+                    else:
+                        words[t][word] += 1
+            whois_text = ""
+            whois_text += f_cont[url]["whois"]["email"] + " "
+            whois_text += ' '.join(f_cont[url]["whois"]["address"]) + " "
+            whois_text += f_cont[url]["whois"]["phone"]
+            for word in whois_text.split():
+                if word not in words[t]:
+                    words[t][word] = 1
+                else:
+                    words[t][word] += 1
 
     def calculate(self, api_key, url, filename, file2):
         with open(file2, 'r') as f_in:

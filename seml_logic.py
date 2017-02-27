@@ -203,30 +203,31 @@ class SEML:
                 words = json.load(f_in)
             console.log("DONE!")
         else:
-            words = {"mtext": {}, "otext": {}, "whois": {}}
+            words = {"Real": {"mtext": {}, "otext": {}, "whois": {}}, "Fake": {"mtext": {}, "otext": {}, "whois": {}}}
             console.log("Set defaults.")
         console.log("Reading file of sites...")
-        with open(filename, 'r') as f_in:
+        with open(filename, 'rb') as f_in:
             f_cont = json.load(f_in)
         console.log("DONE! Going through URLS...")
         for url in f_cont["urls"]:
+            type = f_cont[url]["type"]
             for t in ["mtext", "otext"]:
-                console.log("Reading '{type}' text and logging...")
+                console.log("Reading '{type}' text for url, '{url}' and logging...".format(type=t, url=url))
                 for word in ' '.join(f_cont[url][t]).split():
-                    if word not in words[t]:
-                        words[t][word] = 1
+                    if word not in words[type][t]:
+                        words[type][t][word] = 1
                     else:
-                        words[t][word] += 1
+                        words[type][t][word] += 1
             console.log("Reading whois text and logging...")
             whois_text = ""
             whois_text += f_cont[url]["whois"]["email"] + " "
             whois_text += ' '.join(f_cont[url]["whois"]["address"]) + " "
             whois_text += f_cont[url]["whois"]["phone"]
             for word in whois_text.split():
-                if word not in words["whois"]:
-                    words["whois"][word] = 1
+                if word not in words[type]["whois"]:
+                    words[type]["whois"][word] = 1
                 else:
-                    words["whois"][word] += 1
+                    words[type]["whois"][word] += 1
         console.log("Finished with URLS. Dumping output...")
         with open(outfile, 'w') as f_out:
             json.dump(words, f_out)

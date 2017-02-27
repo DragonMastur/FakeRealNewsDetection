@@ -8,7 +8,8 @@
         "http://abcnews.com.co/obama-signs-executive-order-declaring-investigation-of-election-results/",
         "http://abcnews.com.co/donald-trump-protester-speaks-out-i-was-paid-to-protest/",
         "http://abcnews.com.co/obama-signs-executive-order-banning-national-anthem/",
-        "http://abcnews.com.co/fireman-suspended-and-jailed-by-atheist-mayor/"
+        "http://abcnews.com.co/fireman-suspended-and-jailed-by-atheist-mayor/",
+        "http://www.cnn.com/2017/02/26/politics/navy-secretary-nominee-bilden-withdraws/index.html"
     ],
     "http://abcnews.com.co/breaking-capitol-hill-shooter-identified-as-right-wing-extremist/": {
         "url": "http://abcnews.com.co/breaking-capitol-hill-shooter-identified-as-right-wing-extremist/",
@@ -564,5 +565,41 @@
             "phone": "FIND"
         },
         "type": "Fake"
+    },
+    "http://www.cnn.com/2017/02/26/politics/navy-secretary-nominee-bilden-withdraws/index.html": {
+        "url": "http://www.cnn.com/2017/02/26/politics/navy-secretary-nominee-bilden-withdraws/index.html",
+        "mtext": [
+            "Story highlights"
+        ],
+        "otext": [
+            "Philip Bilden is the second service secretary nominee to withdraw because of financial interests",
+            "Vincent Viola withdrew as Army secretary nominee earlier this month",
+            "(CNN)President Trumps nominee for secretary of the Navy, Philip Bilden, has withdrawn his name from consideration, Bilden and Secretary of Defense Jim Mattis said Sunday in statements.",
+            "Both Bildens and Mattis statements said Bildens business interests created complications. He recently retired from a private equity investment management firm, according to a White House statement.",
+            "\"After an extensive review process,\" Bilden said, \"I have determined that I will not be able to satisfy the Office of Government Ethics requirements without undue disruption and materially adverse divestment of my familys private financial interests.\"",
+            "Mattis said: \"This was a personal decision driven by privacy concerns and significant challenges he faced in separating himself from his business interests.\"",
+            "Mattis said hed recommend another nominee to Trump in the coming days.",
+            "Read More",
+            "A week ago, White House Press Secretary Sean Spicer countered a report by Major Garrett of CBS News that two sources had told him Bilden was likely to withdraw from consideration for the Navy job.",
+            "Spicer tweeted on February 18: \"Those people would be wrong. Just spoke with him and he is 100% commited to being the next SECNAV pending Senate confirm.\"",
+            "Those people would be wrong. Just spoke with him and he is 100% commited to being the next SECNAV pending Senate confirm. https://t.co/AfRZfQQCzG",
+            "This is the second service secretary nominee to withdraw because of financial interests.",
+            "Vincent Viola withdrew as Army secretary nominee earlier this month citing trouble disengaging with his business ties.",
+            "\"Mr. Viola has informed President Trump that he will be unable to accept his nomination to serve as secretary of the Army as the challenges of separating Mr. Viola from the organizations that he has built over the last thirty-five years have proven insurmountable,\" a statement from his team said.",
+            "The White House nominated Bilden on January 25.",
+            "A White House statement said he recently retired as a co-founding member and at HarbourVest Partners LLC, \"a global private equity investment management firm with institutional assets under management currently in excess of $42 billion.\" Hed been with the firm 25 years, the statement said.",
+            "Bilden served in the US Army Reserve as a military intelligence officer from 1986-1996, the statement said."
+        ],
+        "whois": {
+            "email": "FIND",
+            "address": [
+                "FIND",
+                "FIND",
+                "FIND",
+                "FIND"
+            ],
+            "phone": "FIND"
+        },
+        "type": "Real"
     }
 }

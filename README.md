@@ -1,6 +1,6 @@
 # FakeRealNewsDetection
 
-![Build Badge: Failing][null]
+![Build Badge][null]
 -----
 The Fake/Real News Detection is a chrome extension used to
 

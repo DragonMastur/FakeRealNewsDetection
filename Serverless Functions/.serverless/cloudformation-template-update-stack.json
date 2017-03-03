@@ -132,7 +132,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/fake-news-detection/dev/1488510512616-2017-03-03T03:08:32.616Z/fake-news-detection.zip"
+          "S3Key": "serverless/fake-news-detection/dev/1488516471977-2017-03-03T04:47:51.977Z/fake-news-detection.zip"
         },
         "FunctionName": "fake-news-detection-dev-analyze",
         "Handler": "handler.analyze",
@@ -150,14 +150,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "AnalyzeLambdaVersionGz4oriKlvDw5LwEtWrQ9859bUHvmXpwgWLFV4lcAY": {
+    "AnalyzeLambdaVersionxBWF3ohl0G0vhsAunqapDcGFh8dwo2QN3cJOn1JxI": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AnalyzeLambdaFunction"
         },
-        "CodeSha256": "Gz4oriKlvDw5LwEtWrQ9859bUHvmXpwgWLF+V4lcA+Y="
+        "CodeSha256": "xBWF3ohl0G0vh+sAunqapDcGFh8dwo2+QN3cJOn1JxI="
       }
     },
     "HelloLambdaFunction": {
@@ -167,7 +167,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/fake-news-detection/dev/1488510512616-2017-03-03T03:08:32.616Z/fake-news-detection.zip"
+          "S3Key": "serverless/fake-news-detection/dev/1488516471977-2017-03-03T04:47:51.977Z/fake-news-detection.zip"
         },
         "FunctionName": "fake-news-detection-dev-hello",
         "Handler": "handler.hello",
@@ -185,14 +185,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "HelloLambdaVersionGz4oriKlvDw5LwEtWrQ9859bUHvmXpwgWLFV4lcAY": {
+    "HelloLambdaVersionxBWF3ohl0G0vhsAunqapDcGFh8dwo2QN3cJOn1JxI": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "HelloLambdaFunction"
         },
-        "CodeSha256": "Gz4oriKlvDw5LwEtWrQ9859bUHvmXpwgWLF+V4lcA+Y="
+        "CodeSha256": "xBWF3ohl0G0vh+sAunqapDcGFh8dwo2+QN3cJOn1JxI="
       }
     },
     "ApiGatewayRestApi": {
@@ -319,7 +319,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1488510512630": {
+    "ApiGatewayDeployment1488516471998": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -408,13 +408,13 @@
     "AnalyzeLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AnalyzeLambdaVersionGz4oriKlvDw5LwEtWrQ9859bUHvmXpwgWLFV4lcAY"
+        "Ref": "AnalyzeLambdaVersionxBWF3ohl0G0vhsAunqapDcGFh8dwo2QN3cJOn1JxI"
       }
     },
     "HelloLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "HelloLambdaVersionGz4oriKlvDw5LwEtWrQ9859bUHvmXpwgWLFV4lcAY"
+        "Ref": "HelloLambdaVersionxBWF3ohl0G0vhsAunqapDcGFh8dwo2QN3cJOn1JxI"
       }
     },
     "ServiceEndpoint": {

@@ -49,7 +49,8 @@ provider:
 #  include:
 #    - include-me.py
 #    - include-me-dir/**
-#  exclude:
+  exclude:
+     - .DS_Store
 #    - exclude-me.py
 #    - exclude-me-dir/**
 

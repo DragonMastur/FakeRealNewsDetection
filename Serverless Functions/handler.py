@@ -192,10 +192,10 @@ class SEML:
             for t in ["mtext", "otext"]: # for each 'mtext' and 'otext' in each type of news.
                 for word in f_cont[type][t]: # for each word in section.
                     # re-calculated the probibilities to a decimal using total count and total articles.
-                    f_cont[type][t][word] = f_cont[type][t][word] / f_cont["totals"][type]
+                    f_cont[type][t][word] = f_cont[type][t][word] / float(f_cont["totals"][type])
         # set basic probibilities of each news type.
-        fake_prob = 1
-        real_prob = 1
+        fake_prob = 1.0
+        real_prob = 1.0
         for t in ["mtext", "otext"]: # for each of 'mtext' and 'otext'.
             seen = [] # the already seen words, so we don't add on extra probibility.
             for word in ' '.join(page[url][t]).split(): # for each word, in each section.
@@ -225,7 +225,7 @@ class SEML:
 #            sites[url] = news_type
 #            with open(file2, 'w') as f_out:
 #                json.dump(sites, f_out)
-        return news_type # return the news type, and be finished.
+        return (news_type, real_prob, fake_prob) # return the news type, and be finished.
 
 def analyze(event, context):
     try:
@@ -245,9 +245,11 @@ def analyze(event, context):
     seml_inst = SEML()
     logging.debug("Initilized SEML.")
     news_type = seml_inst.calculate("<API KEY>", url, "out.json")
-    logging.debug("Completed calculation. Result: "+news_type)
+    logging.debug("Completed calculation. Result: "+news_type[0])
     result = {
-        "news-type": news_type
+        "news_type": news_type[0],
+        "real_probibility": news_type[1],
+        "fake_probibility": news_type[2]
     }
     response = {
         "statusCode": 200,

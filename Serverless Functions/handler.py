@@ -1,16 +1,13 @@
 import json
 
 def analyze(event, context):
-    body = {
-        "input": event,
-        "result": json.dump({
-            "news-url": None,
-            "news-type": "FIND"
-        })
+    result = {
+        "news-url": None,
+        "news-type": "FIND"
     }
     response = {
         "statusCode": 200,
-        "body": json.dumps(body)
+        "result": json.dumps(result)
     }
     return response
 

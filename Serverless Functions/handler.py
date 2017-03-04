@@ -32,7 +32,7 @@ class PiConsole:
         name = "LOG "+time+" "+name
         logger.debug("[{name}] ".format(name=name) + text + end)
 
-    def logerror(self, text, end=""):
+    def logerror(self, text, end="", name=None):
         time = datetime.datetime.now().isoformat()
         if name == None:
             name = self.name
@@ -168,7 +168,7 @@ class SEML:
 #            json.dump(f_cont, f_out)
         return f_cont # return the file content for the calculation function.
 
-    def calculate(self, api_key, url, filename, file2=None):
+    def calculate(self, api_key, url, filename, file2=None, depth=50):
         '''
         Calculate the probability of a web article being Fake or Real based on the content of that page compared to other data gathered about Fake and Real news articles.
         '''
@@ -194,8 +194,8 @@ class SEML:
                     # re-calculated the probibilities to a decimal using total count and total articles.
                     f_cont[type][t][word] = f_cont[type][t][word] / float(f_cont["totals"][type])
         # set basic probibilities of each news type.
-        fake_prob = 1.0
-        real_prob = 1.0
+        fake_prob = []
+        real_prob = []
         for t in ["mtext", "otext"]: # for each of 'mtext' and 'otext'.
             seen = [] # the already seen words, so we don't add on extra probibility.
             for word in ' '.join(page[url][t]).split(): # for each word, in each section.
@@ -213,6 +213,15 @@ class SEML:
                     fake_prob = fake_prob * f_cont["Fake"][t][word]
 # -----> Can uncomment/comment the next line of code for file logging. WARNING: May use too much memory.
 #                    console.filelog("Found {word} in fake news. Added {prob} to probibility.".format(word=word, prob=f_cont["Fake"][t][word]))
+        # now we calculate the probability of each news type.
+        real_prob_list = sorted(real_prob, reverse=True)
+        fake_prob_list = sorted(fake_prob, reverse=True)
+        real_prob = 1.0
+        fake_prob = 1.0
+        for prob in real_prob_list[0:depth]:
+            real_prob = real_prob * prob
+        for prob in fake_prob_list[0:depth]:
+            fake_prob = fake_prob * prob
         # log the probibilities of each news article to the console.
         console.log("Probibility of being real news: {prob}".format(prob=real_prob))
         console.log("Probibility of being fake news: {prob}".format(prob=fake_prob))

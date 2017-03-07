@@ -1,5 +1,5 @@
 chrome.runtime.sendMessage({"name": "content.js", "command": "send-url"}, function(response) {
-    console.log("This page contains " + response.result);
+    console.log("This page contains " + JSON.parse(response.result).news_type);
 });
 
 chrome.runtime.sendMessage({"name": "content.js", "command": "get-storage", "key": "seml_sites"}, function(response) {

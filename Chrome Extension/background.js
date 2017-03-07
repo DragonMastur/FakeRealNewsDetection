@@ -10,9 +10,9 @@ chrome.runtime.onMessage.addListener(
             sendResponse({"result": sender.tab.url});
         }
         if (request.command == "send-url") {
-            $.post("http://piist300.pythonanywhere.com/seml/get", {"url": sender.tab.url}).done(function(data) {
+            $.get("https://ratb6it5gj.execute-api.us-west-2.amazonaws.com/dev/fakenews/analyze", {"url": sender.tab.url}).done(function(data) {
                 console.log("Got data from server! Data: " + JSON.stringify(data));
-                sendResponse({"result": data});
+                sendResponse({"result": JSON.stringify(data)});
             });
         }
         if (request.command == "get-storage") {

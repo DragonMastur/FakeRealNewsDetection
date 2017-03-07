@@ -35,6 +35,12 @@ class SEML:
     def change_api_key(self, api_key):
         self.api_key = "Token " + api_key
 
+    def opose_type(self, type):
+        if type == "Fake":
+            return "Real"
+        else:
+            return "Fake"
+
     def get_page(self, url, news_type="FIND"):
         '''
         Getting a page from an actual URL. This saves as a file called 'sites.json'. Format is supposed to be "human readable"...
@@ -165,6 +171,8 @@ class SEML:
         # for each url in urls list.
         for url in f_cont["urls"]: # the list allows for more flexibility in the json file.
             type = f_cont[url]["type"] # gather the type of news.
+            if type not in ["Fake", "Real"]:
+                continue
             words["totals"][type] += 1 # add to the total number of articles run.
             for t in ["mtext", "otext"]: # for each 'mtext' and 'otext' section, whois is done later.
                 seen = [] # list of already seen words.
@@ -174,6 +182,7 @@ class SEML:
                         seen.append(word.lower()) # add it to the list of words seen.
                         if word.lower() not in words[type][t]: # if there's not a key, make one.
                             words[type][t][word.lower()] = 1
+                            words[self.opose_type(type)][t][word.lower()] = 0
                         else: # if the key(word) exists, add 1 to it.
                             words[type][t][word.lower()] += 1
             console.log("Reading whois text and logging...")
@@ -196,7 +205,7 @@ class SEML:
             json.dump(words, f_out)
         console.log("DONE!")
 
-    def calculate(self, api_key, url, filename, file2=None, depth=50):
+    def calculate(self, api_key, url, filename, file2=None, depth=50, margin=0.1):
         '''
         Calculate the probability of a web article being Fake or Real based on the content of that page compared to other data gathered about Fake and Real news articles.
         '''
@@ -216,11 +225,16 @@ class SEML:
             f_cont = json.load(f_in)
         self.change_api_key(api_key) # change the API key, to input from user.
         page = self.get_page(url) # gather the page.
+        '''
         for type in ["Real", "Fake"]: # for each type of news.
             for t in ["mtext", "otext"]: # for each 'mtext' and 'otext' in each type of news.
                 for word in f_cont[type][t]: # for each word in section.
                     # re-calculated the probibilities to a decimal using total count and total articles.
-                    f_cont[type][t][word] = f_cont[type][t][word] / f_cont["totals"][type]
+                    try:
+                        f_cont[type][t][word] = f_cont[type][t][word] / float(f_cont["Real"][t][word]+f_cont["Fake"][t][word])
+                    except KeyError:
+                        f_cont[type][t][word] = f_cont[type][t][word] / float(f_cont[type][t][word])
+        '''
         # set basic probibilities of each news type.
         fake_prob = []
         real_prob = []
@@ -231,32 +245,48 @@ class SEML:
                     continue
                 else: # otherwise, add it to list of words seen, and continue calculation.
                     seen.append(word)
+                # check to see if word exists in Fake or Real pre calcs.
+                if word not in f_cont["Real"][t] and word not in f_cont["Fake"][t]:
+                    continue # if neither contains word, then continue the loop.
+                # pre-calculate the totals and words.
+                fake_word = f_cont["Fake"][t][word]
+                fake_total = f_cont["totals"]["Fake"]
+                real_word = f_cont["Real"][t][word]
+                real_total = f_cont["totals"]["Real"]
+                all_total = f_cont["totals"]["Fake"] + f_cont["totals"]["Real"]
 # -----> Can uncomment/comment the next line of code for file logging. WARNING: May use too much memory.
 #                console.filelog("Word: {word}".format(word=word))
                 if word in f_cont["Real"][t]: # if the word is in the pre-calculated probibilities for real news, add it to the probibility of real news.
+                    signal = ( (real_word / real_total ) * ( real_total / all_total ) ) / ( ( real_word / real_total ) * ( real_total / all_total ) + ( fake_word / fake_total ) * ( fake_total / all_total ) )
                     real_prob.append(f_cont["Real"][t][word])
 # -----> Can uncomment/comment the next line of code for file logging. WARNING: May use too much memory.
 #                    console.filelog("Found {word} in real news. Added {prob} to probibility.".format(word=word, prob=f_cont["Real"][t][word]))
                 if word in f_cont["Fake"][t]: # if the word is in the pre-calculated probibilities for fake news, add it to the probibility of fake news.
-                    fake_prob.append(f_cont["Fake"][t][word])
+                    signal = ( (fake_word / fake_total ) * ( fake_total / all_total ) ) / ( ( fake_word / fake_total ) * ( fake_total / all_total ) + ( real_word / real_total ) * ( real_total / all_total ) )
+                    fake_prob.append(signal)
 # -----> Can uncomment/comment the next line of code for file logging. WARNING: May use too much memory.
 #                    console.filelog("Found {word} in fake news. Added {prob} to probibility.".format(word=word, prob=f_cont["Fake"][t][word]))
         # now we calculate the probability of each news type.
         real_prob_list = sorted(real_prob, reverse=True)
         fake_prob_list = sorted(fake_prob, reverse=True)
-        real_prob = 1.0
-        fake_prob = 1.0
+        real_prob = 0.5
+        fake_prob = 0.5
         for prob in real_prob_list[0:depth]:
             real_prob = real_prob * prob
         for prob in fake_prob_list[0:depth]:
             fake_prob = fake_prob * prob
+        normalizer = real_prob + fake_prob # create the normalizer, and normalizer probabilities.
+        real_prob = real_prob / normalizer
+        fake_prob = fake_prob / normalizer
+        if fake_prob > 0.5 + margin: # if the probability of being fake is greater than the margian of being fake news, defaulting to 60%.
+            news_type = "Fake"
+        elif real_prob > 0.5 + margin:
+            news_type = "Real"
+        else: # if the probability of fake or real news is between the margin, defaulting to 40%-60%.
+            news_type = "Caution"
         # log the probibilities of each news article to the console.
         console.log("Probibility of being real news: {prob}".format(prob=real_prob))
         console.log("Probibility of being fake news: {prob}".format(prob=fake_prob))
-        if fake_prob >= real_prob: # if the probibility of being fake is greater than the probibility of being real, it's considered fake new.
-            news_type = "Fake"
-        else: # otherwise it's real news, not fake news.
-            news_type = "Real"
         # add the url to calculated urls if a file inputed.
         if file2 != None:
             sites[url] = news_type

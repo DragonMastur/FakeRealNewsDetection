@@ -63,14 +63,14 @@ class SEML:
         '''
         Getting a page from an actual URL. This saves as a file called 'sites.json'. Format is supposed to be "human readable"...
         '''
-        console.log("Trying to gather page {url}...".format(url=url))
+#        console.log("Trying to gather page {url}...".format(url=url))
         res = [str(self.send_request(url))] # response of the page content.
-        console.log("DONE! Accessing Monkey Learn API...")
+#        console.log("DONE! Accessing Monkey Learn API...")
         response = self.monkey_learn(res) # accessing the Monkey Learn API to find words.
-        console.log("DONE! Saving data do file...")
+#        console.log("DONE! Saving data do file...")
         norm = self.normalize_words([response]) # save the data to a file with a "human-readable" format.
         s = self.save({"url": url, "headers": norm["headers"], "paragraphs": norm["paragraphs"]}, news_type)
-        console.log("DONE!")
+#        console.log("DONE!")
         return s # this is used for the calculations function, so the program can get the data from Monkey Learn.api-key
 
     def monkey_learn(self, text):
@@ -94,11 +94,12 @@ class SEML:
         '''
         try:
             response = requests.get(url=url, headers={})
-            console.log('Response HTTP Status Code: {status_code}'.format(
+#            console.log('Response HTTP Status Code: {status_code}'.format(
                 status_code=response.status_code))
             return response.content
         except requests.exceptions.RequestException:
-            console.logerror('HTTP Request failed')
+            console.logerror('HTTP Request failed. Return code: {status_code}'.format(
+                status_code=response.status_code))
             return False
 
     def normalize_words(self, array):
@@ -168,7 +169,7 @@ class SEML:
 #            json.dump(f_cont, f_out)
         return f_cont # return the file content for the calculation function.
 
-    def calculate(self, api_key, url, filename, file2=None, depth=50):
+    def calculate(self, api_key, url, filename, file2=None, depth=50, margin=0.2):
         '''
         Calculate the probability of a web article being Fake or Real based on the content of that page compared to other data gathered about Fake and Real news articles.
         '''
@@ -206,11 +207,11 @@ class SEML:
 # -----> Can uncomment/comment the next line of code for file logging. WARNING: May use too much memory.
 #                console.filelog("Word: {word}".format(word=word))
                 if word in f_cont["Real"][t]: # if the word is in the pre-calculated probibilities for real news, add it to the probibility of real news.
-                    real_prob = real_prob * f_cont["Real"][t][word]
+                    real_prob.append(f_cont["Real"][t][word])
 # -----> Can uncomment/comment the next line of code for file logging. WARNING: May use too much memory.
 #                    console.filelog("Found {word} in real news. Added {prob} to probibility.".format(word=word, prob=f_cont["Real"][t][word]))
                 if word in f_cont["Fake"][t]: # if the word is in the pre-calculated probibilities for fake news, add it to the probibility of fake news.
-                    fake_prob = fake_prob * f_cont["Fake"][t][word]
+                    fake_prob.append(f_cont["Fake"][t][word])
 # -----> Can uncomment/comment the next line of code for file logging. WARNING: May use too much memory.
 #                    console.filelog("Found {word} in fake news. Added {prob} to probibility.".format(word=word, prob=f_cont["Fake"][t][word]))
         # now we calculate the probability of each news type.
@@ -222,13 +223,18 @@ class SEML:
             real_prob = real_prob * prob
         for prob in fake_prob_list[0:depth]:
             fake_prob = fake_prob * prob
+        normalizer = real_prob + fake_prob # create the normalizer, and normalizer probabilities.
+        real_prob = real_prob / normalizer
+        fake_prob = fake_prob / normalizer
         # log the probibilities of each news article to the console.
         console.log("Probibility of being real news: {prob}".format(prob=real_prob))
         console.log("Probibility of being fake news: {prob}".format(prob=fake_prob))
-        if fake_prob >= real_prob: # if the probibility of being fake is greater than the probibility of being real, it's considered fake new.
+        if fake_prob > 0.5 + margin: # if the probability of being fake is greater than the margian of being fake news, defaulting to 60%.
             news_type = "Fake"
-        else: # otherwise it's real news, not fake news.
+        elif real_prob > 0.5 + margin:
             news_type = "Real"
+        else: # if the probability of fake or real news is between the margin, defaulting to 40%-60%.
+            news_type = "Caution"
         # add the url to calculated urls if a file inputed.
 #        if file2 != None:
 #            sites[url] = news_type
@@ -250,10 +256,10 @@ def analyze(event, context):
         }
         return response
     logging.debug("URL: "+url)
-    logging.debug("Analyze: "+json.dumps(event))
+#    logging.debug("Analyze: "+json.dumps(event))
     seml_inst = SEML()
-    logging.debug("Initilized SEML.")
-    news_type = seml_inst.calculate("<API KEY>", url, "out.json")
+#    logging.debug("Initilized SEML.")
+    news_type = seml_inst.calculate("<API KEY>", url, "out.json", 50, 0.2)
     logging.debug("Completed calculation. Result: "+news_type[0])
     result = {
         "news_type": news_type[0],

@@ -19,6 +19,7 @@ chrome.runtime.onMessage.addListener(
             console.log("Trying to get data with key '" + request.key + "'");
             try {
                 chrome.storage.sync.get(request.key, function(data) {
+                    console.log("Data collected successfully.");
                     storage_get = data;
                     sendResponse({"result": storage_get});
                 });

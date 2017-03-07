@@ -234,24 +234,15 @@ class SEML:
                     sites = json.load(f_in)
             except:
                 console.logerror("No file with name: {name}, was found.".format(name=file2))
+                sites = {}
             # if the url is alread been calculated, there is no need to re-calculated.
             if url in sites:
                 return sites[url] # just return, and be done.
-        news_type = "FIND" # set default news type.
+        news_type = "Error" # set default news type.
         with open(filename, 'rb') as f_in:
             f_cont = json.load(f_in)
         self.change_api_key(api_key) # change the API key, to input from user.
         page = self.get_page(url) # gather the page.
-        '''
-        for type in ["Real", "Fake"]: # for each type of news.
-            for t in ["mtext", "otext"]: # for each 'mtext' and 'otext' in each type of news.
-                for word in f_cont[type][t]: # for each word in section.
-                    # re-calculated the probibilities to a decimal using total count and total articles.
-                    try:
-                        f_cont[type][t][word] = f_cont[type][t][word] / float(f_cont["Real"][t][word]+f_cont["Fake"][t][word])
-                    except KeyError:
-                        f_cont[type][t][word] = f_cont[type][t][word] / float(f_cont[type][t][word])
-        '''
         # set basic probibilities of each news type.
         fake_prob = []
         real_prob = []
@@ -266,17 +257,17 @@ class SEML:
                 if word not in f_cont["Real"][t] and word not in f_cont["Fake"][t]:
                     continue # if neither contains word, then continue the loop.
                 # pre-calculate the totals and words.
-                fake_word = f_cont["Fake"][t][word]
-                fake_total = f_cont["totals"]["Fake"]
-                real_word = f_cont["Real"][t][word]
-                real_total = f_cont["totals"]["Real"]
-                all_total = f_cont["totals"]["Fake"] + f_cont["totals"]["Real"]
+                fake_word = float(f_cont["Fake"][t][word])
+                fake_total = float(f_cont["totals"]["Fake"])
+                real_word = float(f_cont["Real"][t][word])
+                real_total = float(f_cont["totals"]["Real"])
+                all_total = float(f_cont["totals"]["Fake"] + f_cont["totals"]["Real"])
                 # calculae likelyhoods and proirs.
                 fake_likelyhood = fake_word / fake_total
                 fake_proir = fake_total / all_total
                 real_likelyhood = real_word / real_total
                 real_proir = real_total / all_total
-                marginal_likelyhood = fake_likelyhood * fake_proir + real_likelyhood * real_proir
+                marginal_likelyhood = float(fake_likelyhood * fake_proir + real_likelyhood * real_proir)
                 # calculate the signals of real and fake probability.
                 signal = ( real_likelyhood * real_proir ) / marginal_likelyhood
                 real_prob.append(signal)
@@ -288,10 +279,14 @@ class SEML:
         real_prob = 0.5
         fake_prob = 0.5
         for prob in real_prob_list[0:depth]:
+            if prob == 0:
+                continue
             real_prob = real_prob * prob
         for prob in fake_prob_list[0:depth]:
+            if prob == 0:
+                continue
             fake_prob = fake_prob * prob
-        normalizer = real_prob + fake_prob # create the normalizer, and normalizer probabilities.
+        normalizer = float(real_prob + fake_prob) # create the normalizer, and normalizer probabilities.
         real_prob = real_prob / normalizer
         fake_prob = fake_prob / normalizer
         if fake_prob > 0.5 + margin: # if the probability of being fake is greater than the margian of being fake news, defaulting to 60%.
@@ -303,7 +298,7 @@ class SEML:
         # log the probibilities of each news article to the console.
         console.log("Probibility of being real news: {prob}".format(prob=real_prob))
         console.log("Probibility of being fake news: {prob}".format(prob=fake_prob))
-        return news_type # return the news type, and be finished.
+        return (news_type, real_prob, fake_prob) # return the news type, and be finished.
 
 
 def analyze(event, context):
@@ -323,7 +318,7 @@ def analyze(event, context):
 #    logging.debug("Analyze: "+json.dumps(event))
     seml_inst = SEML()
 #    logging.debug("Initilized SEML.")
-    news_type = seml_inst.calculate("<API KEY>", url, "out.json", 50, 0.2)
+    news_type = seml_inst.calculate("<API KEY>", url, "out.json", "calculated_sites.json", 50, 0.2)
     logging.debug("Completed calculation. Result: "+news_type[0])
     result = {
         "news_type": news_type[0],

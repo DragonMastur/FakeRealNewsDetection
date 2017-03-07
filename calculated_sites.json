@@ -12,5 +12,6 @@
     "www.nytimes.com": "Real",
     "www.foxnews.com": "Real",
     "www.nbcnews.com": "Real",
-    "http://abcnews.com.co/": "Fake"
+    "http://abcnews.com.co/": "Fake",
+    "http://www.cnn.com": "Real",
 }

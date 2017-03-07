@@ -254,18 +254,17 @@ class SEML:
                 real_word = f_cont["Real"][t][word]
                 real_total = f_cont["totals"]["Real"]
                 all_total = f_cont["totals"]["Fake"] + f_cont["totals"]["Real"]
-# -----> Can uncomment/comment the next line of code for file logging. WARNING: May use too much memory.
-#                console.filelog("Word: {word}".format(word=word))
-                if word in f_cont["Real"][t]: # if the word is in the pre-calculated probibilities for real news, add it to the probibility of real news.
-                    signal = ( (real_word / real_total ) * ( real_total / all_total ) ) / ( ( real_word / real_total ) * ( real_total / all_total ) + ( fake_word / fake_total ) * ( fake_total / all_total ) )
-                    real_prob.append(f_cont["Real"][t][word])
-# -----> Can uncomment/comment the next line of code for file logging. WARNING: May use too much memory.
-#                    console.filelog("Found {word} in real news. Added {prob} to probibility.".format(word=word, prob=f_cont["Real"][t][word]))
-                if word in f_cont["Fake"][t]: # if the word is in the pre-calculated probibilities for fake news, add it to the probibility of fake news.
-                    signal = ( (fake_word / fake_total ) * ( fake_total / all_total ) ) / ( ( fake_word / fake_total ) * ( fake_total / all_total ) + ( real_word / real_total ) * ( real_total / all_total ) )
-                    fake_prob.append(signal)
-# -----> Can uncomment/comment the next line of code for file logging. WARNING: May use too much memory.
-#                    console.filelog("Found {word} in fake news. Added {prob} to probibility.".format(word=word, prob=f_cont["Fake"][t][word]))
+                # calculae likelyhoods and proirs.
+                fake_likelyhood = fake_word / fake_total
+                fake_proir = fake_total / all_total
+                real_likelyhood = real_word / real_total
+                real_proir = real_total / all_total
+                marginal_likelyhood = fake_likelyhood * fake_proir + real_likelyhood * real_proir
+                # calculate the signals of real and fake probability.
+                signal = ( real_likelyhood * real_proir ) / marginal_likelyhood
+                real_prob.append(signal)
+                signal = ( fake_likelyhood * fake_proir ) / marginal_likelyhood
+                fake_prob.append(signal)
         # now we calculate the probability of each news type.
         real_prob_list = sorted(real_prob, reverse=True)
         fake_prob_list = sorted(fake_prob, reverse=True)

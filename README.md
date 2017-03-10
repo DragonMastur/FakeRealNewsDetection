@@ -6,6 +6,7 @@ The Fake/Real News Detection is a chrome extension used to detect fake and real 
 
 -----
 README.md document describing the software's use and stuff.
+
 Copyright (C) 2017-2018 Pi Programs
 
 [null]: https://null.null/
